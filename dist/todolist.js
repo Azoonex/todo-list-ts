@@ -1,6 +1,7 @@
 let inputvalue = document.querySelector('.todo-value');
 let addTodoBtn = document.querySelector('.add-todo');
 let todoList = document.querySelector('.todoList');
+let todos = JSON.parse(localStorage.getItem('todos') || '[]');
 const clickHandler = (e) => {
     e.preventDefault();
     if (inputvalue.value === '' || inputvalue.value.length < 3) {
@@ -13,7 +14,9 @@ const clickHandler = (e) => {
             isCompleted: false
         };
         addTodoList(newValueTdoo);
-        console.log(newValueTdoo.title);
+        todos.push(newValueTdoo);
+        svaeTodoInlocalStorage();
+        inputvalue.value = '';
     }
 };
 const addTodoList = (todo) => {
@@ -22,8 +25,21 @@ const addTodoList = (todo) => {
   ${todo.title}<span class="icon"
     ><i class="fas fa-trash"></i
   ></span>
-</li>
+  </li>
   `);
 };
+const svaeTodoInlocalStorage = () => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+    return true;
+};
+const removeTodo = (todoID) => {
+    todos = todos.filter(todo => todo.id !== todoID);
+    svaeTodoInlocalStorage();
+    todoList.innerHTML = '';
+    todos.forEach(todo => addTodoList(todo));
+};
 addTodoBtn.addEventListener('click', (e) => (clickHandler(e)));
+window.addEventListener('DOMContentLoaded', () => {
+    todos.forEach(todo => addTodoList(todo));
+});
 //# sourceMappingURL=todolist.js.map

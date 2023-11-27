@@ -2,12 +2,13 @@ let inputvalue = document.querySelector('.todo-value') as HTMLInputElement;
 let addTodoBtn = document.querySelector('.add-todo') as HTMLButtonElement;
 let todoList = document.querySelector('.todoList') as HTMLDivElement;
 
-
 interface TypeTodo {
   id: string,
   title: string,
   isCompleted : boolean
 }
+
+let todos:TypeTodo[] = JSON.parse(localStorage.getItem('todos') || '[]') 
 
 
 const clickHandler = (e:Event) => {
@@ -21,13 +22,13 @@ const clickHandler = (e:Event) => {
       id: crypto.randomUUID(),
       title : inputvalue.value,
       isCompleted : false
-      
     } 
-    addTodoList(newValueTdoo)
-    console.log(newValueTdoo.title);
-  }
 
-  
+    addTodoList(newValueTdoo);
+    todos.push(newValueTdoo)
+    svaeTodoInlocalStorage()
+    inputvalue.value = ''
+  }
 }
 
 
@@ -39,14 +40,26 @@ const addTodoList = (todo:TypeTodo,)=>{
   ${todo.title}<span class="icon"
     ><i class="fas fa-trash"></i
   ></span>
-</li>
+  </li>
   `
   )
 }
 
+const svaeTodoInlocalStorage = ()=>{
+  localStorage.setItem('todos',JSON.stringify(todos))
+  return true
+}
 
+const removeTodo = (todoID:string)=>{
+  todos = todos.filter(todo => todo.id !== todoID)
+  svaeTodoInlocalStorage()
+  todoList.innerHTML = ''
+  todos.forEach(todo=> addTodoList(todo))
+}
 
 
 addTodoBtn.addEventListener('click',(e)=>(clickHandler(e)))
 
-
+window.addEventListener('DOMContentLoaded',()=>{
+  todos.forEach(todo=> addTodoList(todo))
+})
