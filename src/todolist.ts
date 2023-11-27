@@ -1,7 +1,7 @@
 let inputvalue = document.querySelector('.todo-value') as HTMLInputElement;
 let addTodoBtn = document.querySelector('.add-todo') as HTMLButtonElement;
 let todoList = document.querySelector('.todoList') as HTMLDivElement;
-
+let clearTodos = document.querySelector('.clear-todos') as HTMLButtonElement
 interface TypeTodo {
   id: string,
   title: string,
@@ -56,6 +56,13 @@ const removeTodo = (todoID:string)=>{
   todoList.innerHTML = ''
   todos.forEach(todo=> addTodoList(todo))
 }
+
+clearTodos.addEventListener('click',()=>{
+  todoList.innerHTML = ''
+    todos = []
+    svaeTodoInlocalStorage()
+  
+})
 
 
 addTodoBtn.addEventListener('click',(e)=>(clickHandler(e)))

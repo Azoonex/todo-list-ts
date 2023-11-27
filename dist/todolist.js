@@ -1,6 +1,7 @@
 let inputvalue = document.querySelector('.todo-value');
 let addTodoBtn = document.querySelector('.add-todo');
 let todoList = document.querySelector('.todoList');
+let clearTodos = document.querySelector('.clear-todos');
 let todos = JSON.parse(localStorage.getItem('todos') || '[]');
 const clickHandler = (e) => {
     e.preventDefault();
@@ -38,6 +39,11 @@ const removeTodo = (todoID) => {
     todoList.innerHTML = '';
     todos.forEach(todo => addTodoList(todo));
 };
+clearTodos.addEventListener('click', () => {
+    todoList.innerHTML = '';
+    todos = [];
+    svaeTodoInlocalStorage();
+});
 addTodoBtn.addEventListener('click', (e) => (clickHandler(e)));
 window.addEventListener('DOMContentLoaded', () => {
     todos.forEach(todo => addTodoList(todo));
